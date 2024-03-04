@@ -4,7 +4,7 @@
 //_\SV
    // Include Tiny Tapeout Lab.
    // Included URL: "https://raw.githubusercontent.com/os-fpga/Virtual-FPGA-Lab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlv_lib/tiny_tapeout_lib.tlv"// Included URL: "https://raw.githubusercontent.com/os-fpga/Virtual-FPGA-Lab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlv_lib/fpga_includes.tlv"
-//_\source top.tlv 154
+//_\source top.tlv 155
 
 //_\SV
 
@@ -41,8 +41,8 @@ module top(input logic clk, input logic reset, input logic [31:0] cyc_cnt, outpu
    // Instantiate the Tiny Tapeout module.
    tt_um_template tt(.*);
 
-   assign passed = top.cyc_cnt > 60;
-   //assign passed = top.cyc_cnt > 1000;
+   //assign passed = top.cyc_cnt > 60;
+   assign passed = top.cyc_cnt > 1000;
    assign failed = 1'b0;
 endmodule
 
@@ -107,6 +107,10 @@ logic FpgaPins_Fpga_TIMER_clk_a0;
 logic [7:0] FpgaPins_Fpga_TIMER_cnt1_a1,
             FpgaPins_Fpga_TIMER_cnt1_a2;
 
+// For /fpga_pins/fpga|timer$cnt2.
+logic [7:0] FpgaPins_Fpga_TIMER_cnt2_a1,
+            FpgaPins_Fpga_TIMER_cnt2_a2;
+
 // For /fpga_pins/fpga|timer$digit.
 logic [6:0] FpgaPins_Fpga_TIMER_digit_a1;
 
@@ -115,6 +119,10 @@ logic [0:0] FpgaPins_Fpga_TIMER_dsel_a1;
 
 // For /fpga_pins/fpga|timer$hexout.
 logic [6:0] FpgaPins_Fpga_TIMER_hexout_a1;
+
+// For /fpga_pins/fpga|timer$pulse.
+logic FpgaPins_Fpga_TIMER_pulse_a1,
+      FpgaPins_Fpga_TIMER_pulse_a2;
 
 // For /fpga_pins/fpga|timer$reset.
 logic FpgaPins_Fpga_TIMER_reset_a0,
@@ -139,6 +147,12 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
 
             // Staging of $cnt1.
             always_ff @(posedge clk) FpgaPins_Fpga_TIMER_cnt1_a2[7:0] <= FpgaPins_Fpga_TIMER_cnt1_a1[7:0];
+
+            // Staging of $cnt2.
+            always_ff @(posedge clk) FpgaPins_Fpga_TIMER_cnt2_a2[7:0] <= FpgaPins_Fpga_TIMER_cnt2_a1[7:0];
+
+            // Staging of $pulse.
+            always_ff @(posedge clk) FpgaPins_Fpga_TIMER_pulse_a2 <= FpgaPins_Fpga_TIMER_pulse_a1;
 
             // Staging of $reset.
             always_ff @(posedge clk) FpgaPins_Fpga_TIMER_reset_a1 <= FpgaPins_Fpga_TIMER_reset_a0;
@@ -197,12 +211,16 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
                assign \///@0$clk = FpgaPins_Fpga_TIMER_clk_a0;
                (* keep *) logic [7:0] \///@1$cnt1 ;
                assign \///@1$cnt1 = FpgaPins_Fpga_TIMER_cnt1_a1;
+               (* keep *) logic [7:0] \///@1$cnt2 ;
+               assign \///@1$cnt2 = FpgaPins_Fpga_TIMER_cnt2_a1;
                (* keep *) logic [6:0] \///@1$digit ;
                assign \///@1$digit = FpgaPins_Fpga_TIMER_digit_a1;
                (* keep *) logic [0:0] \///@1$dsel ;
                assign \///@1$dsel = FpgaPins_Fpga_TIMER_dsel_a1;
                (* keep *) logic [6:0] \///@1$hexout ;
                assign \///@1$hexout = FpgaPins_Fpga_TIMER_hexout_a1;
+               (* keep *) logic  \///@1$pulse ;
+               assign \///@1$pulse = FpgaPins_Fpga_TIMER_pulse_a1;
                (* keep *) logic  \///@0$reset ;
                assign \///@0$reset = FpgaPins_Fpga_TIMER_reset_a0;
             end
@@ -224,7 +242,7 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
 //_\TLV
    /* verilator lint_off UNOPTFLAT */
    // Connect Tiny Tapeout I/Os to Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 224 as: m5+tt_connections()
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 76   // Instantiated from top.tlv, 225 as: m5+tt_connections()
       assign L0_slideswitch_a0[7:0] = ui_in;
       assign L0_sseg_segment_n_a0[6:0] = ~ uo_out[6:0];
       assign L0_sseg_decimal_point_n_a0 = ~ uo_out[7];
@@ -232,7 +250,7 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
    //_\end_source
 
    // Instantiate the Virtual FPGA Lab.
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 227 as: m5+board(/top, /fpga, 7, $, , my_design)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 307   // Instantiated from top.tlv, 228 as: m5+board(/top, /fpga, 7, $, , my_design)
       
       //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv 355   // Instantiated from /raw.githubusercontent.com/osfpga/VirtualFPGALab/a069f1e4e19adc829b53237b3e0b5d6763dc3194/tlvlib/fpgaincludes.tlv, 309 as: m4+thanks(m5__l(309)m5_eval(m5_get(BOARD_THANKS_ARGS)))
          //_/thanks
@@ -294,14 +312,14 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
                      // counter defaults to roller over from ff to 00
             
                      // 2nd stage counter
-                     //$cnt2[7:0] = $reset == 1'b1 ? 8'b0 :
-                     //             $cnt1[7:0] == 8'hff ? >>1$cnt2[7:0] + 1 :
-                     //             $cnt2[7:0];
+                     assign FpgaPins_Fpga_TIMER_cnt2_a1[7:0] = FpgaPins_Fpga_TIMER_reset_a1 == 1'b1 ? 8'b0 :
+                                  FpgaPins_Fpga_TIMER_cnt1_a1[7:0] == 8'hff ? FpgaPins_Fpga_TIMER_cnt2_a2[7:0] + 1 :
+                                  FpgaPins_Fpga_TIMER_cnt2_a2[7:0];
             
                      // example for generating a pulse ... $pulse inverts everytime $cnt1=FF
-                     //$pulse = $reset == 1'b1 ? 1'b0 :
-                     //         $cnt1[7:0] == 8'hff ? ! >>1$pulse :
-                     //         $pulse;
+                     assign FpgaPins_Fpga_TIMER_pulse_a1 = FpgaPins_Fpga_TIMER_reset_a1 == 1'b1 ? 1'b0 :
+                              FpgaPins_Fpga_TIMER_cnt1_a1[7:0] == 8'hff ? ! FpgaPins_Fpga_TIMER_pulse_a2 :
+                              FpgaPins_Fpga_TIMER_pulse_a2;
             
                      //10 millisecond counter
                      //$cnt3[31:0] = $reset == 1'b1 ? 32'b0 :
@@ -314,7 +332,8 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
                            //= 1'b1; // select digit 1
             
                      // this works
-                     assign FpgaPins_Fpga_TIMER_dsel_a1[0:0] = 1'b0;
+                     //$dsel[0:0] = 1'b0;
+                     assign FpgaPins_Fpga_TIMER_dsel_a1[0:0] = FpgaPins_Fpga_TIMER_pulse_a1;
                      //$dsel[0:0] = $reset == 1'b1 ? 1'b0 :
                      //             $cnt1[7:0] == 8'hff ? ! >>1$dsel : // works
                                   //$cnt3[7:0] == 8'hff ? ! >>1$dsel : // works
@@ -390,7 +409,7 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
       
    //_\end_source
    // Label the switch inputs [0..7] (1..8 on the physical switch panel) (top-to-bottom).
-   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 229 as: m5+tt_input_labels_viz(⌈"UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED"⌉)
+   //_\source /raw.githubusercontent.com/osfpga/VirtualFPGALab/35e36bd144fddd75495d4cbc01c4fc50ac5bde6f/tlvlib/tinytapeoutlib.tlv 82   // Instantiated from top.tlv, 230 as: m5+tt_input_labels_viz(⌈"UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED", "UNUSED"⌉)
       for (input_label = 0; input_label <= 7; input_label++) begin : L1_InputLabel //_/input_label
          
       end
