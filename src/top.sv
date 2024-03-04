@@ -332,7 +332,7 @@ logic FpgaPins_Fpga_TIMER_reset_a0,
                            //= 1'b1; // select digit 1
             
                      // this works
-                     assign FpgaPins_Fpga_TIMER_dsel_a1[0:0] = 1'b0;
+                     assign FpgaPins_Fpga_TIMER_dsel_a1[0:0] = 1'b1;
                      //$dsel[0:0] = $pulse;
                      //$dsel[0:0] = $reset == 1'b1 ? 1'b0 :
                      //             $cnt1[7:0] == 8'hff ? ! >>1$dsel : // works
